@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-bg text-ink font-body;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-display;
+}
+
+/* Small reusable pieces so pages don't repeat long class strings */
+.card {
+  @apply bg-surface border border-border rounded-card shadow-card;
+}
+
+.btn-primary {
+  @apply bg-primary text-white font-medium px-4 py-2.5 rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-white text-ink font-medium px-4 py-2.5 rounded-lg border border-border hover:bg-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-danger {
+  @apply bg-danger text-white font-medium px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50;
+}
+
+.input-field {
+  @apply w-full px-3.5 py-2.5 rounded-lg border border-border bg-white text-ink placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary;
+}
+
+.label-text {
+  @apply block text-sm font-medium text-ink mb-1.5;
+}
+
+/* ============================================================
+   Modern toast notifications (sonner, unstyled mode)
+   Renders top-right via <Toaster position="top-right" /> in App.jsx.
+   ============================================================ */
+
+:root {
+  --jp-toast-success: #1f6f5c;
+  --jp-toast-success-bg: #e4f2ee;
+  --jp-toast-error: #c0442e;
+  --jp-toast-error-bg: #fbe9e5;
+  --jp-toast-warning: #b8860b;
+  --jp-toast-warning-bg: #fbf1dd;
+  --jp-toast-info: #2e6e9e;
+  --jp-toast-info-bg: #e6eff6;
+  --jp-toast-neutral: #1c2321;
+}
+
+/* Give sonner's own positioning wrapper a touch more breathing room; the
+   toasts themselves still slide/stack using sonner's built-in engine. */
+[data-sonner-toaster] {
+  --width: 380px;
+}
+
+.jp-toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #e4e4de;
+  box-shadow:
+    0 1px 2px rgba(28, 35, 33, 0.06),
+    0 12px 28px -6px rgba(28, 35, 33, 0.16);
+  overflow: hidden;
+  font-family: "Inter", sans-serif;
+  color: #1c2321;
+}
+
+/* Colored top progress bar that drains over the toast's lifetime */
+.jp-toast::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: currentColor;
+  opacity: 0.9;
+  animation: jp-toast-drain 4.5s linear forwards;
+  transform-origin: left;
+}
+
+[data-sonner-toast]:hover .jp-toast::before {
+  animation-play-state: paused;
+}
+
+@keyframes jp-toast-drain {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.jp-toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.jp-toast-title {
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: #1c2321;
+}
+
+.jp-toast-desc {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #6b7570;
+  margin-top: 2px;
+}
+
+.jp-toast-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #6b7570;
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease,
+    transform 0.15s ease;
+  cursor: pointer;
+}
+
+.jp-toast-close svg {
+  width: 13px;
+  height: 13px;
+}
+
+[data-sonner-toast]:hover .jp-toast-close {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.jp-toast-close:hover {
+  background: #f7f7f4;
+  color: #1c2321;
+}
+
+.jp-toast-action,
+.jp-toast-cancel {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: opacity 0.15s ease;
+}
+
+.jp-toast-action {
+  background: #1f6f5c;
+  color: #fff;
+}
+
+.jp-toast-cancel {
+  background: transparent;
+  border-color: #e4e4de;
+  color: #1c2321;
+}
+
+.jp-toast-action:hover,
+.jp-toast-cancel:hover {
+  opacity: 0.85;
+}
+
+.jp-toast-spin {
+  animation: jp-toast-spin 0.8s linear infinite;
+}
+
+@keyframes jp-toast-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Type variants — icon chip + progress bar color per toast kind */
+.jp-toast--success {
+  color: var(--jp-toast-success);
+}
+.jp-toast--success .jp-toast-icon {
+  background: var(--jp-toast-success-bg);
+  color: var(--jp-toast-success);
+}
+
+.jp-toast--error {
+  color: var(--jp-toast-error);
+}
+.jp-toast--error .jp-toast-icon {
+  background: var(--jp-toast-error-bg);
+  color: var(--jp-toast-error);
+}
+
+.jp-toast--warning {
+  color: var(--jp-toast-warning);
+}
+.jp-toast--warning .jp-toast-icon {
+  background: var(--jp-toast-warning-bg);
+  color: var(--jp-toast-warning);
+}
+
+.jp-toast--info {
+  color: var(--jp-toast-info);
+}
+.jp-toast--info .jp-toast-icon {
+  background: var(--jp-toast-info-bg);
+  color: var(--jp-toast-info);
+}
+
+.jp-toast--loading {
+  color: var(--jp-toast-neutral);
+}
+.jp-toast--loading .jp-toast-icon {
+  background: #f7f7f4;
+  color: #6b7570;
+}
+.jp-toast--loading::before {
+  animation: none;
+  opacity: 0.25;
+}
+
+@media (max-width: 480px) {
+  [data-sonner-toaster] {
+    --width: calc(100vw - 32px);
+  }
+}
